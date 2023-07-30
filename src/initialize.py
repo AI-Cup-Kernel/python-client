@@ -8,7 +8,12 @@ server_ip = config['server_ip']
 server_port = config['server_port']
 
 # make a login request to the server 
-login_response = requests.request('GET', f'http://{server_ip}:{server_port}/login').json()
+try:
+    login_response = requests.request('GET', f'http://{server_ip}:{server_port}/login').json()
+except:
+    print("the server is not running")
+    exit()
+
 
 try:
     id = login_response['player_id']
@@ -21,10 +26,9 @@ except:
 
 
 
-
 # make a server to get the start of my turn
 app = Flask(__name__)
-app.app_context().push()
+
 
 def ready():
     resp = requests.request('GET', f'http://{server_ip}:{server_port}/ready', headers={'x-access-token': token})
@@ -34,8 +38,9 @@ def ready():
     else:
         print("can't make a ready request")
         exit()
+
 with app.app_context():
     ready()
 
-app.run(debug=True, port=my_port)
+app.run(debug=True, port=my_port, use_reloader=False)
 
