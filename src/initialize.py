@@ -19,7 +19,6 @@ try:
     id = login_response['player_id']
     token = login_response['token']
     my_port = login_response['port']
-    public_key = login_response['public_key']
 except:
     print('server is full')
     exit()
