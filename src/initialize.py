@@ -1,15 +1,31 @@
 import json
 import requests
 from flask import Flask
+import random
+from src.game import Game
+from flask import request
+from functools import wraps
+from flask import jsonify
+from main import turn as player_turn
+
+
 
 # read config file from config.json
 config = json.load(open('config.json'))
+
 server_ip = config['server_ip']
 server_port = config['server_port']
 
 # make a login request to the server 
 try:
-    login_response = requests.request('GET', f'http://{server_ip}:{server_port}/login').json()
+    # generate a random password 
+    password = int(random.randint(100000, 999999))
+
+    # make a dictionary to send to the server
+    login_data = {'token': password}
+
+    # send login data as a form in a POST request
+    login_response = requests.request('POST', f'http://{server_ip}:{server_port}/login', data=login_data).json()
 except:
     print("the server is not running")
     exit()
@@ -20,13 +36,74 @@ try:
     token = login_response['token']
     my_port = login_response['port']
 except:
-    print('server is full')
+    print('there is a problem in the server response')
+    try :
+        print(login_response['error'])
+    except:
+        print("there is no error message in the response")
     exit()
 
+
+# generate game object
+game = Game(token, server_ip, server_port)
+
+
+# a function to check the password in the x-access-token header
+def token_required(func):
+    """
+    This function is used as a decorator to check the token
+    """
+    # use wraps to keep the original function name
+    @wraps(func)
+    def decorator():
+        token = None
+        output_dict = dict()
+
+        # ensure the jwt-token is passed with the headers
+        if 'x-access-token' in request.headers:
+            token = request.headers['x-access-token']
+        if not token: # throw error if no token provided
+            output_dict['error'] = 'Token is missing!'
+            return jsonify(output_dict), 401
+
+        token = int(token)
+        # check if the token is correct
+        if token != password:
+            output_dict['error'] = 'Invalid token!'
+            return jsonify(output_dict), 401
+        
+
+
+        return func()
+
+    return decorator
 
 
 # make a server to get the start of my turn
 app = Flask(__name__)
+
+
+@app.route('/init', methods=['GET'])
+@token_required
+def initializer():
+    print('initializer started')
+
+    return 'ok'
+
+@app.route('/turn', methods=['GET'])
+@token_required
+def turn():
+    print('turn started')
+    player_turn(game)
+    return 'ok'
+
+@app.route('/end', methods=['GET'])
+@token_required
+def end_turn():
+    print('turn ended')
+
+    return 'ok'
+
 
 
 def ready():
@@ -35,6 +112,7 @@ def ready():
     if 200<=code<300:
         print('ready')
     else:
+        print(resp.json()['error'])
         print("can't make a ready request")
         exit()
 
