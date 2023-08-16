@@ -11,10 +11,10 @@ class Game:
         if 200<=code<300:
             return eval(response.text)
         try:
-            print(response.json()['error'])
+            return response.json()['error']
         except:
-            print("unknown error")
-        return dict()
+            return "unknown error"
+        
 
     def get_owner(self):
         try:
@@ -50,3 +50,18 @@ class Game:
             return
         return self.handel_output(resp)
 
+    def get_adj(self):
+        try:
+            resp = requests.request('GET', f'http://{self.server_ip}:{self.server_port}/get_adj', headers={'x-access-token': self.token})
+        except:
+            print("can't make request")
+            return
+        return self.handel_output(resp)
+    
+    def next_state(self):
+        try:
+            resp = requests.request('GET', f'http://{self.server_ip}:{self.server_port}/next_state', headers={'x-access-token': self.token})
+        except:
+            print("can't make request")
+            return
+        return self.handel_output(resp)
