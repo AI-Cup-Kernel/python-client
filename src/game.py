@@ -5,6 +5,7 @@ class Game:
         self.token = token
         self.server_ip = server_ip
         self.server_port = server_port
+        self.my_turn = False
     
     def handel_output(self, response):
         code = response.status_code
@@ -15,7 +16,6 @@ class Game:
         except:
             return "unknown error"
         
-
     def get_owner(self):
         try:
             resp = requests.request('GET', f'http://{self.server_ip}:{self.server_port}/get_owners', headers={'x-access-token': self.token})
@@ -32,7 +32,6 @@ class Game:
             return
         return self.handel_output(resp)
     
-
     def get_state(self):
         try:
             resp = requests.request('GET', f'http://{self.server_ip}:{self.server_port}/get_state', headers={'x-access-token': self.token})
@@ -64,4 +63,49 @@ class Game:
         except:
             print("can't make request")
             return
+        return self.handel_output(resp)
+    
+    def put_one_troop(self, node_id):
+        body = {
+            'node_id': node_id
+        }
+        
+        resp = requests.request('POST', f'http://{self.server_ip}:{self.server_port}/put_one_troop', headers={'x-access-token': self.token}, data=body)
+        return self.handel_output(resp)
+    
+    def put_troop(self, node_id, num):
+        body = {
+            'node_id': node_id,
+            'number_of_troops': num
+        }
+
+        resp = requests.request('POST', f'http://{self.server_ip}:{self.server_port}/put_troop', headers={'x-access-token': self.token}, data=body)
+        return self.handel_output(resp)
+
+    def get_player_id(self):
+        try:
+            resp = requests.request('GET', f'http://{self.server_ip}:{self.server_port}/get_player_id', headers={'x-access-token': self.token})
+        except:
+            print("can't make request")
+            return
+        return self.handel_output(resp)
+    
+    def attack(self, attacking_id, target_id, fraction):
+        body = {
+            'attacking_id': attacking_id,
+            'target_id': target_id,
+            'fraction': fraction
+        }
+
+        resp = requests.request('POST', f'http://{self.server_ip}:{self.server_port}/attack', headers={'x-access-token': self.token}, data=body)
+        return self.handel_output(resp)
+    
+    def move_troop(self, source, destination, troop_count):
+        body = {
+            'source': source,
+            'destination': destination,
+            'troop_count': troop_count
+        }
+
+        resp = requests.request('POST', f'http://{self.server_ip}:{self.server_port}/move_troop', headers={'x-access-token': self.token}, data=body)
         return self.handel_output(resp)

@@ -7,7 +7,8 @@ from flask import request
 from functools import wraps
 from flask import jsonify
 from main import turn as player_turn
-
+from main import initializer as player_initializer
+import threading
 
 
 # read config file from config.json
@@ -81,29 +82,34 @@ def token_required(func):
 
 # make a server to get the start of my turn
 app = Flask(__name__)
-
+turn_thread = None
 
 @app.route('/init', methods=['GET'])
 @token_required
 def initializer():
+    global turn_thread
+    game.my_turn = True
     print('initializer started')
-
+    turn_thread = threading.Thread(target=player_initializer, args=(game,))
+    turn_thread.start()
     return 'ok'
 
 @app.route('/turn', methods=['GET'])
 @token_required
 def turn():
+    global turn_thread
+    game.my_turn = True
     print('turn started')
-    player_turn(game)
+    turn_thread = threading.Thread(target=player_turn, args=(game,))
+    turn_thread.start()
     return 'ok'
 
 @app.route('/end', methods=['GET'])
 @token_required
 def end_turn():
     print('turn ended')
-
+    game.my_turn = False
     return 'ok'
-
 
 
 def ready():
