@@ -16,7 +16,7 @@ class Game:
         except:
             return "unknown error"
         
-    def get_owner(self):
+    def get_owners(self):
         try:
             resp = requests.request('GET', f'http://{self.server_ip}:{self.server_port}/get_owners', headers={'x-access-token': self.token})
         except:
@@ -108,4 +108,28 @@ class Game:
         }
 
         resp = requests.request('POST', f'http://{self.server_ip}:{self.server_port}/move_troop', headers={'x-access-token': self.token}, data=body)
+        return self.handel_output(resp)
+    
+    def get_strategic_nodes(self):
+        try:
+            resp = requests.request('GET', f'http://{self.server_ip}:{self.server_port}/get_strategic_nodes', headers={'x-access-token': self.token})
+        except:
+            print("can't make request")
+            return
+        return self.handel_output(resp)
+    
+    def get_number_of_troops_to_put(self):
+        try:
+            resp = requests.request('GET', f'http://{self.server_ip}:{self.server_port}/get_number_of_troops_to_put', headers={'x-access-token': self.token})
+        except:
+            print("can't make request")
+            return
+        return self.handel_output(resp)
+    
+    def get_reachable(self, node_id):
+        body = {
+            'node_id': node_id
+        }
+
+        resp = requests.request('POST', f'http://{self.server_ip}:{self.server_port}/get_reachable', headers={'x-access-token': self.token}, data=body)
         return self.handel_output(resp)
