@@ -12,6 +12,7 @@ class Game:
         if 200<=code<300:
             return eval(response.text)
         try:
+            print(response.json()['error'])
             return response.json()['error']
         except:
             return "unknown error"
