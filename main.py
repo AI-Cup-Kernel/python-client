@@ -27,7 +27,7 @@ def turn(game):
     for i in owner.keys():
         if owner[str(i)] == game.get_player_id()['player_id']:
             list_of_my_nodes.append(i)
-    print(game.put_troop(random.choice(list_of_my_nodes), game.get_number_of_troops_to_put()['number of troops']))
+    print(game.put_troop(random.choice(list_of_my_nodes), game.get_number_of_troops_to_put()['number_of_troops']))
     print(game.get_number_of_troops_to_put())
 
     print(game.next_state())
