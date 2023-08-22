@@ -17,6 +17,9 @@ config = json.load(open('config.json'))
 server_ip = config['server_ip']
 server_port = config['server_port']
 
+# disable proxy and vpn 
+os.environ['NO_PROXY'] = f'{server_ip}'
+
 # make a login request to the server 
 try:
     # generate a random password 
@@ -126,8 +129,7 @@ with app.app_context():
     ready()
 
 
-# disable proxy and vpn 
-os.environ['NO_PROXY'] = f'{config["host"]}:{my_port}'
+
 
 
 app.run(debug=True, port=my_port, use_reloader=False, host=config['host'])
