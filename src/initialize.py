@@ -9,7 +9,7 @@ from flask import jsonify
 from main import turn as player_turn
 from main import initializer as player_initializer
 import threading
-
+import os
 
 # read config file from config.json
 config = json.load(open('config.json'))
@@ -124,6 +124,10 @@ def ready():
 
 with app.app_context():
     ready()
+
+
+os.environ['no_proxy'] = '*'
+
 
 app.run(debug=True, port=my_port, use_reloader=False)
 
