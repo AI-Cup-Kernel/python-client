@@ -126,8 +126,9 @@ with app.app_context():
     ready()
 
 
-os.environ['no_proxy'] = '*'
+# disable proxy and vpn 
+os.environ['NO_PROXY'] = f'{config["host"]}:{my_port}'
 
 
-app.run(debug=True, port=my_port, use_reloader=False)
+app.run(debug=True, port=my_port, use_reloader=False, host=config['host'])
 
