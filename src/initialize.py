@@ -114,6 +114,13 @@ def end_turn():
     game.my_turn = False
     return 'ok'
 
+@app.route('/kill', methods=['GET'])
+@token_required
+def shutdown():
+    print('kill')
+    own_pid = os.getpid()
+    os.kill(own_pid, 9)
+    return 'ok'
 
 def ready():
     resp = requests.request('GET', f'http://{server_ip}:{server_port}/ready', headers={'x-access-token': token})
