@@ -11,11 +11,12 @@ class Game:
         code = response.status_code
         if 200<=code<300:
             return eval(response.text)
-        try:
+        if 'error' in response.json():
             print(response.json()['error'])
-            return response.json()['error']
-        except:
-            return "unknown error"
+            raise Exception(response.json()['error'])
+        else:
+            print("unknown error")
+            raise Exception("unknown error")
         
     def get_owners(self):
         try:

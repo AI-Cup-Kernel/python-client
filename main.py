@@ -23,6 +23,10 @@ def initializer(game):
 def turn(game):
     print(game.get_number_of_troops_to_put())
     owner = game.get_owners()
+    for i in owner.keys():
+        if owner[str(i)] == -1 and game.get_number_of_troops_to_put()['number_of_troops'] > 1:
+            print(game.put_troop(i, 1))
+            
     list_of_my_nodes = []
     for i in owner.keys():
         if owner[str(i)] == game.get_player_id()['player_id']:
@@ -44,7 +48,7 @@ def turn(game):
     # find a neighbor of that node that I don't own
     adj = game.get_adj()
     for i in adj[max_node]:
-        if owner[str(i)] != game.get_player_id()['player_id']:
+        if owner[str(i)] != game.get_player_id()['player_id'] and owner[str(i)] != -1:
             print(game.attack(max_node, i, 1))
             break
     print(game.next_state())
