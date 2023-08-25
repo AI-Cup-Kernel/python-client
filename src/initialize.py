@@ -10,6 +10,7 @@ from main import turn as player_turn
 from main import initializer as player_initializer
 import threading
 import os
+import logging
 
 # read config file from config.json
 config = json.load(open('config.json'))
@@ -86,6 +87,10 @@ def token_required(func):
 # make a server to get the start of my turn
 app = Flask(__name__)
 turn_thread = None
+
+app.logger.propagate = False
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 @app.route('/init', methods=['GET'])
 @token_required

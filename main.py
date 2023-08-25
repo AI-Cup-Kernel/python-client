@@ -1,8 +1,6 @@
 import random
 
-def initializer(game):
-    print(game.get_strategic_nodes())
-     
+def initializer(game):     
     strategic_nodes = game.get_strategic_nodes()['strategic_nodes']
     score = game.get_strategic_nodes()['score']
     owner = game.get_owners()
@@ -65,30 +63,5 @@ def turn(game):
     print(game.get_reachable(max_node))
     destination = random.choice(game.get_reachable(max_node)['reachable'])
     print(game.move_troop(max_node, destination, 1))
-    #print(game.get_player_id())
-    #print(game.get_turn_number())
-    #print(game.get_number_of_troops())
-    #print(game.get_adj())
-    #print(game.next_state())
-    #print(game.get_state())
-    #print(game.next_state())
-    #print(game.get_state())
-    #print(game.next_state())
-    #print(game.get_state())
-    #print(game.next_state())
-    #print(game.get_state())
-    '''
-    print("hello")
-    print(game.get_owner())
-    print(game.get_number_of_troops())
-    print(game.put_troop(0, 4))
-    game.next_state()
-    print(game.attack(0, 2, 0))
-    print(game.next_state())
-    print(game.get_turn_number())
-    print(game.move_troop(0, 1, 3))
-    print(game.get_number_of_troops())
-    print(game.move_troop(0, 1,1))
-    #print(game.get_adj())
-    '''
+
 
