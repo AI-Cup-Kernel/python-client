@@ -1,15 +1,6 @@
 import random
 
 def initializer(game):   
-    i = 0
-    while True:
-        try:
-            game.get_adj()
-            i += 1
-        except:
-            print(i)
-            return
-    print("here")
     strategic_nodes = game.get_strategic_nodes()['strategic_nodes']
     score = game.get_strategic_nodes()['score']
     strategic_nodes = list(zip(strategic_nodes, score))
@@ -40,7 +31,6 @@ def initializer(game):
     print("3-  putting one troop on", node)
 
 def turn(game):
-    return 
     print(game.get_number_of_troops_to_put())
     owner = game.get_owners()
     for i in owner.keys():
@@ -69,7 +59,7 @@ def turn(game):
     adj = game.get_adj()
     for i in adj[max_node]:
         if owner[str(i)] != game.get_player_id()['player_id'] and owner[str(i)] != -1:
-            print(game.attack(max_node, i, 1))
+            print(game.attack(max_node, i, 1, 0.5))
             break
     print(game.next_state())
     print(game.get_state())
@@ -85,5 +75,3 @@ def turn(game):
     print(game.get_reachable(max_node))
     destination = random.choice(game.get_reachable(max_node)['reachable'])
     print(game.move_troop(max_node, destination, 1))
-
-

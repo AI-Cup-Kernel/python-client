@@ -92,11 +92,12 @@ class Game:
             return
         return self.handel_output(resp)
     
-    def attack(self, attacking_id, target_id, fraction):
+    def attack(self, attacking_id, target_id, fraction, move_fraction):
         body = {
             'attacking_id': attacking_id,
             'target_id': target_id,
-            'fraction': fraction
+            'fraction': fraction,
+            'move_fraction': move_fraction
         }
 
         resp = requests.request('POST', f'http://{self.server_ip}:{self.server_port}/attack', headers={'x-access-token': self.token}, data=body)
