@@ -1,6 +1,8 @@
 import random
+from src.game import Game
 
-def initializer(game):   
+
+def initializer(game: Game):   
     strategic_nodes = game.get_strategic_nodes()['strategic_nodes']
     score = game.get_strategic_nodes()['score']
     strategic_nodes = list(zip(strategic_nodes, score))
@@ -74,4 +76,8 @@ def turn(game):
                 max_node = i
     print(game.get_reachable(max_node))
     destination = random.choice(game.get_reachable(max_node)['reachable'])
-    print(game.move_troop(max_node, destination, 1))
+    #print(game.move_troop(max_node, destination, 1))
+    print(game.next_state())
+    print(game.get_number_of_troops()[str(max_node)])
+    print(game.fort(max_node, 3))
+    print(game.get_number_of_fort_troops())

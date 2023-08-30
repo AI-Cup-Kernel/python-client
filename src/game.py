@@ -136,3 +136,20 @@ class Game:
 
         resp = requests.request('POST', f'http://{self.server_ip}:{self.server_port}/get_reachable', headers={'x-access-token': self.token}, data=body)
         return self.handel_output(resp)
+    
+    def get_number_of_fort_troops(self):
+        try:
+            resp = requests.request('GET', f'http://{self.server_ip}:{self.server_port}/get_number_of_fort_troops', headers={'x-access-token': self.token})
+        except:
+            print("can't make request")
+            return
+        return self.handel_output(resp)
+
+    def fort(self, node_id, troop_count):
+        body = {
+            'node_id': node_id,
+            'troop_count': troop_count
+        }
+
+        resp = requests.request('POST', f'http://{self.server_ip}:{self.server_port}/fort', headers={'x-access-token': self.token}, data=body)
+        return self.handel_output(resp)
