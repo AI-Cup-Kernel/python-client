@@ -1,6 +1,7 @@
 import random
 from src.game import Game
 
+flag = False
 
 def initializer(game: Game):   
     strategic_nodes = game.get_strategic_nodes()['strategic_nodes']
@@ -33,6 +34,7 @@ def initializer(game: Game):
     print("3-  putting one troop on", node)
 
 def turn(game):
+    global flag
     print(game.get_number_of_troops_to_put())
     owner = game.get_owners()
     for i in owner.keys():
@@ -76,8 +78,20 @@ def turn(game):
                 max_node = i
     print(game.get_reachable(max_node))
     destination = random.choice(game.get_reachable(max_node)['reachable'])
-    #print(game.move_troop(max_node, destination, 1))
+    print(game.move_troop(max_node, destination, 1))
     print(game.next_state())
-    print(game.get_number_of_troops()[str(max_node)])
-    print(game.fort(max_node, 3))
-    print(game.get_number_of_fort_troops())
+
+    if flag == False:
+        max_troops = 0
+        max_node = -1
+        owner = game.get_owners()
+        for i in owner.keys():
+            if owner[str(i)] == game.get_player_id()['player_id']:
+                if game.get_number_of_troops()[i] > max_troops:
+                    max_troops = game.get_number_of_troops()[i]
+                    max_node = i
+
+        print(game.get_number_of_troops()[str(max_node)])
+        print(game.fort(max_node, 3))
+        print(game.get_number_of_fort_troops())
+        flag = True
