@@ -1,5 +1,6 @@
 import random
 from src.game import Game
+import time 
 
 flag = False
 
@@ -35,7 +36,6 @@ def initializer(game: Game):
 
 def turn(game):
     global flag
-    print(game.get_number_of_troops_to_put())
     owner = game.get_owners()
     for i in owner.keys():
         if owner[str(i)] == -1 and game.get_number_of_troops_to_put()['number_of_troops'] > 1:
@@ -77,7 +77,12 @@ def turn(game):
                 max_troops = game.get_number_of_troops()[i]
                 max_node = i
     print(game.get_reachable(max_node))
-    destination = random.choice(game.get_reachable(max_node)['reachable'])
+    x = game.get_reachable(max_node)['reachable']
+    try:
+        x.remove(int(max_node))
+    except:
+        print(x, max_node)
+    destination = random.choice(x)
     print(game.move_troop(max_node, destination, 1))
     print(game.next_state())
 
@@ -95,3 +100,4 @@ def turn(game):
         print(game.fort(max_node, 3))
         print(game.get_number_of_fort_troops())
         flag = True
+    game.next_state()
