@@ -39,6 +39,7 @@ def initializer(game: Game):
 
 def turn(game):
     global flag
+    game.printer("test\n")
     owner = game.get_owners()
     for i in owner.keys():
         if owner[str(i)] == -1 and game.get_number_of_troops_to_put()['number_of_troops'] > 1:
@@ -66,7 +67,7 @@ def turn(game):
     adj = game.get_adj()
     for i in adj[max_node]:
         if owner[str(i)] != game.get_player_id()['player_id'] and owner[str(i)] != -1:
-            print(game.attack(max_node, i, 1, 0.5))
+            print(game.attack(max_node, i, 1, 0.9999999))
             break
     print(game.next_state())
     print(game.get_state())
